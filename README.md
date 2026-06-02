@@ -1,4 +1,4 @@
-# Mel Filterbank Magnitudes for Laryngeal Pathology Discrimination in Speech Signals
+# Mel-Frequency Band Magnitudes for Laryngeal Pathology Discrimination in Speech Signals
 
 ![Python](https://img.shields.io/badge/Python-3.10.20-blue)
 ![Speech Biomarkers](https://img.shields.io/badge/Domain-Speech%20Biomarkers-purple)
