@@ -37,7 +37,9 @@ Three binary classification tasks are addressed:
 Classification is performed without automatic classifiers. A single decision threshold is applied per task, selected to maximise the F1-score.<br>
 The figure below shows the distribution of the standard deviation of MFBM (Band 3) across all speakers. Dashed lines indicate the optimal thresholds obtained for each pairwise classification task.
 
-<img src="results/figures/06_3_classes.png" width="750">
+<p align="center">
+  <img src="results/figures/06_3_classes.png" width="750">
+</p>
 
 ---
 
