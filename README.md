@@ -60,18 +60,7 @@ The figure below shows the distribution of the standard deviation of MFBM (Band 
 │   ├── figures/                    # Plots and visualisations
 │   └── metrics/                    # Confusion matrices, accuracy and F1 scores
 │
-├── src/
-│   ├── data_loader.py
-│   ├── mel_filterbank.py
-│   ├── get_MFBM.py
-│   ├── export_dataframe.py
-│   ├── import_dataframe.py
-│   ├── plot_meldefined_magnitudes_per_class.py
-│   ├── find_most_discriminative_bands.py
-│   ├── plot_band_discriminability.py
-│   ├── build_X_y.py
-│   ├── threshold_f1_search.py
-│   └── evaluate_threshold_model.py
+├── src/                            # Source code modules
 │
 ├── .gitignore
 ├── LICENSE

@@ -3,15 +3,23 @@ import pandas as pd
 import numpy as np
 import soundfile as sf
 import os
+import logging
+from typing import Tuple, Optional
+
+logger = logging.getLogger(__name__)
 
 
-def data_loader(dataset_name, data_root="../data", normalize=True):
+def data_loader(
+    dataset_name: str,
+    data_root: str,
+    normalize: bool = True
+) -> Tuple[pd.DataFrame, Optional[int]]:
     """
     Load metadata and audio signals from a dataset.
 
     Expected structure:
-    data/<dataset_name>/<dataset_name>.csv
-    data/<dataset_name>/<class>/<audio_file>
+    <data_root>/<dataset_name>/<dataset_name>.csv
+    <data_root>/<dataset_name>/<class>/<audio_file>
 
     CSV format (no header):
     [file, age, gender, class]
@@ -20,23 +28,20 @@ def data_loader(dataset_name, data_root="../data", normalize=True):
     ----------
     dataset_name : str
         Name of the dataset folder (e.g., "myUSP")
-
     data_root : str
-        Root folder containing datasets (default: "../data")
-
-    normalize : bool
-        If True, normalize signals to max amplitude = 1
+        Root folder containing datasets (absolute path recommended; 
+        e.g., CORPORA_ROOT from the calling notebook/script)
+    normalize : bool, optional
+        If True, normalize each signal to its maximum absolute amplitude.
 
     Returns
     -------
-    df : pandas.DataFrame
-        DataFrame with metadata + signal + class index
-
+    df : pd.DataFrame
+        DataFrame containing metadata and loaded audio signals:
+        columns = [file, age, gender, group, path, class, signal, fs]
     fs_global : int or None
-        Sampling frequency if consistent, else None
-
-    class_map : dict
-        Mapping from class names to integers
+        Global sampling rate if all files share the same rate,
+        otherwise None.
     """
 
     # -----------------------------
@@ -78,7 +83,11 @@ def data_loader(dataset_name, data_root="../data", normalize=True):
     samplerates = []
 
     for _, row in df.iterrows():
+    
         signal, fs = sf.read(row['path'])
+        
+        # in case it's stereo
+        signal = np.mean(signal, axis=1) if signal.ndim > 1 else signal        
 
         # Normalize (optional)
         if normalize and np.max(np.abs(signal)) > 0:
@@ -95,9 +104,9 @@ def data_loader(dataset_name, data_root="../data", normalize=True):
     # -----------------------------
     if df['fs'].nunique() == 1:
         fs_global = int(df['fs'].iloc[0])
-        print(f"All signals have the same sampling rate: {fs_global} Hz")
+        logger.info(f"All signals have same sampling rate: {fs_global} Hz")
     else:
         fs_global = None
-        print("Warning: inconsistent sampling rates.")
+        logger.warning("Inconsistent sampling rates detected")
 
     return df, fs_global

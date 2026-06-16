@@ -3,13 +3,31 @@ import numpy as np
 from numpy.fft import fft
 
 
-def obter_FFT(sinal_in, tamanho, passo, n_fft):
+def obter_FFT(
+    sinal_in: np.ndarray,
+    tamanho: int,
+    passo: int,
+    n_fft: int
+) -> np.ndarray:
     """
-    Frame-wise FFT of signal.
+    Compute frame-wise FFT of a signal (STFT-like representation).
 
-    Returns:
-        STFT-like matrix: (n_freq_bins, n_frames)
-        using ONLY positive frequencies (excluding Nyquist)
+    Parameters
+    ----------
+    sinal_in : np.ndarray
+        Input signal.
+    tamanho : int
+        Frame size (samples).
+    passo : int
+        Hop size (samples).
+    n_fft : int
+        FFT size.
+
+    Returns
+    -------
+    np.ndarray
+        STFT-like matrix, shape (n_freq_bins, n_frames), using only 
+        positive frequencies (Nyquist excluded).
     """
 
     frames = []
@@ -26,7 +44,13 @@ def obter_FFT(sinal_in, tamanho, passo, n_fft):
 
 
 
-def get_MFBM(sinal, fs, tamanho, passo, n_fft, filt):
+def get_MFBM(
+    sinal: np.ndarray,
+    tamanho: int,
+    passo: int,
+    n_fft: int,
+    filt: np.ndarray
+) -> np.ndarray:
     """
     Compute Mel Filter Bank Magnitudes
 
@@ -34,8 +58,6 @@ def get_MFBM(sinal, fs, tamanho, passo, n_fft, filt):
     ----------
     sinal : ndarray
         Input signal
-    fs : int
-        Sampling frequency
     tamanho : int
         Frame size (samples)
     passo : int

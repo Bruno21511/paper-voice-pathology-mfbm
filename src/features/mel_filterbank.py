@@ -1,9 +1,18 @@
 # -*- coding: utf-8 -*-
 import numpy as np
 import matplotlib.pyplot as plt
+from typing import Optional
 
+def mel_filterbank(
+    fs: int,
+    n_filters: int,
+    fmax: float,
+    sobrep: float,
+    n_fft: int,
+    print_filters: bool = False,
+    save_path: Optional[str] = None
+) -> np.ndarray:
 
-def mel_filterbank(fs, n_filters, fmax, sobrep, n_fft, print_filters=False, save_path=None ):
     """
     Create Mel-scale triangular filterbank with controllable overlap.
 
@@ -99,7 +108,7 @@ def mel_filterbank(fs, n_filters, fmax, sobrep, n_fft, print_filters=False, save
     filt[0, 0] = 0
     
     # --- Optional plot
-    if print_filters == True:
+    if print_filters:
 
         plt.figure(figsize=(12, 6))
 

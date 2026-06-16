@@ -1,34 +1,45 @@
 # -*- coding: utf-8 -*-
 from pathlib import Path
+from typing import Optional, List
+import pandas as pd
+import logging
 
-def export_dataframe(df,
-                     dataset_name,
-                     output_root="../data/processed",
-                     expand_mfbm=True,
-                     drop_columns=None):
+logger = logging.getLogger(__name__)
+
+def export_dataframe(
+    df: pd.DataFrame,
+    dataset_name: str,
+    output_root: str,
+    expand_mfbm: bool = True,
+    drop_columns: Optional[List[str]] = None
+) -> pd.DataFrame:
     """
     Export processed DataFrame to parquet.
 
     Parameters
     ----------
     df : pandas.DataFrame
-        Input dataframe
+        Input dataframe.
     dataset_name : str
-        Name used for output file
+        Name used for output file.
     output_root : str
-        Base directory to save file
-    expand_mfbm : bool
-        Whether to split MFBM into per-band columns
-    drop_columns : list or None
-        Columns to remove before saving
-    """
+        Base directory to save file (absolute or correctly resolved 
+        relative path; e.g. PROJECT_ROOT / "data/processed").
+    expand_mfbm : bool, optional
+        Whether to split MFBM into per-band columns, by default True.
+    drop_columns : list of str or None, optional
+        Columns to remove before saving, by default None.
 
+    Returns
+    -------
+    pd.DataFrame
+        The exported dataframe (after expansion and column dropping).
+    """
     df_out = df.copy()
 
     # --- 1. Expand MFBM if requested
     if expand_mfbm and 'MFBM' in df_out.columns:
         n_bands = df_out['MFBM'].iloc[0].shape[0]
-
         for i in range(n_bands):
             df_out[f'MFBM_{i}'] = df_out['MFBM'].apply(
                 lambda x: x[i, :].tolist()
@@ -44,10 +55,8 @@ def export_dataframe(df,
     # --- 4. Save
     output_dir = Path(output_root)
     output_dir.mkdir(parents=True, exist_ok=True)
-
     output_path = output_dir / f"{dataset_name}.parquet"
     df_out.to_parquet(output_path, index=False)
-
-    print(f"Saved to: {output_path}")
+    logger.info(f"Saved to: {output_path}")
 
     return df_out
