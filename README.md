@@ -1,10 +1,8 @@
 # Mel-Frequency Band Magnitudes for Laryngeal Pathology Discrimination in Speech Signals
 
-![Python](https://img.shields.io/badge/Python-3.10.20-blue)
-![Speech Biomarkers](https://img.shields.io/badge/Domain-Speech%20Biomarkers-purple)
-![Method](https://img.shields.io/badge/Method-Threshold%20Based-orange)
-![Paper](https://img.shields.io/badge/Paper-CISTI_2023-red)
-![Status](https://img.shields.io/badge/Status-Completed-green)
+![CI](https://github.com/Bruno21511/paper-voice-pathology-mfbm/actions/workflows/ci.yml/badge.svg)
+![Python](https://img.shields.io/badge/Python-3.10+-blue)
+![Paper](https://img.shields.io/badge/Paper-CISTI%202023-red)
 
 This repository contains the code and data associated with the paper:
 
@@ -47,20 +45,31 @@ The figure below shows the distribution of the standard deviation of MFBM (Band 
 
 ```
 ├── data/
-│   ├── myUSP
-│   │   └── myUSP.csv             	# Audio corpus metadata (filename, age, gender, group)
 │   └── processed/
-│       └── myUSP.parquet           # Pre-extracted MFBM features (no audio signals)
+│       └── myUSP.parquet           # Processed dataset with extracted MFBM features (no audio signals)
 │
 ├── notebooks/
-│   ├── 01_MFBM_extraction.ipynb    # Load audio, extract MFBM, export to parquet
-│   └── 02_analysis.ipynb           # Load parquet, reproduce paper results
+│   ├── 01_MFBM_extraction.ipynb    # Load audio, extract MFBM, export processed dataset
+│   └── 02_analysis.ipynb           # Statistical analysis and reproduction of paper results
 │
 ├── results/
-│   ├── figures/                    # Plots and visualisations
-│   └── metrics/                    # Confusion matrices, accuracy and F1 scores
+│   ├── figures/                    # Generated plots and visualisations
+│   └── metrics/                    # Classification metrics and confusion matrices
 │
 ├── src/                            # Source code modules
+│   ├── data/                       # Data loading and dataframe handling
+│   ├── features/                   # Signal processing and feature extraction
+│   ├── analysis/                   # Statistical analysis and feature evaluation
+│   ├── evaluation/                 # Classification metrics and evaluation utilities
+│   └── visualization/              # Plotting and figure generation
+│
+├── tests/                          # Unit tests
+│
+├── config.yaml                     # Project configuration and experiment parameters
+├── pytest.ini                      # Pytest configuration
+├── .github/
+│   └── workflows/
+│       └── ci.yml                  # Continuous integration pipeline
 │
 ├── .gitignore
 ├── LICENSE
@@ -142,41 +151,41 @@ Open and run `notebooks/02_analysis.ipynb` directly. No audio files required.
 
 ### Option B — Starting from audio files
 
-Place the audio files in the expected directory structure:
+Place the audio corpus outside the repository, following the structure below:
 
 ```
-data/
-└── myUSP/
-    ├── myUSP.csv
-    ├── control/
-    │   └── *.wav
-    ├── edema/
-    │   └── *.wav
-    ├── nodulo/
-    │   └── *.wav
-    └── neuro/
-        └── *.wav
+parent_directory/
+├── paper-voice-pathology-mfbm/
+└── corpora/
+    └── myUSP/
+        ├── control/
+        │   └── *.wav
+        ├── edema/
+        │   └── *.wav
+        ├── neuro/
+        │   └── *.wav
+        ├── nodulo/
+        │   └── *.wav
+        └── myUSP.csv              # Audio corpus metadata (filename, age, gender, group)
 ```
+
+**Note**: The corpus directory is configured separately from the repository to avoid storing large audio files in version control.
 
 Then run `notebooks/01_MFBM_extraction.ipynb` followed by `notebooks/02_analysis.ipynb`.
+
+**Configuration**: Before running the pipeline, check or adjust the dataset names, paths, and extraction parameters in the config.yaml file located at the root of the project.
 
 ---
 
 ## Citation
 
-If you use this code or data in your research, please cite:
+If you use this code or data in your research, please cite the original paper:
 
-```bibtex
-@inproceedings{rodrigues2023,
-  author    = {Rodrigues, Bruno and Cordeiro, Hugo and Marques, Gon{\c{c}}alo},
-  title     = {Bandas espectrais de energia para discriminação de patologias laríngeas em sinais de fala},
-  booktitle = {18th Iberian Conference on Information Systems and Technologies (CISTI)},
-  year      = {2023},
-  month     = {June},
-  address   = {Aveiro, Portugal},
-  isbn      = {978-989-33-4792-8}
-}
-```
+> **"Bandas espectrais de energia para discriminação de patologias laríngeas em sinais de fala"**<br>
+> <i>Spectral energy bands for laryngeal pathologies discrimination in speech signals</i>  
+> B. Rodrigues, H. Cordeiro, G. Marques  
+> 18th Iberian Conference on Information Systems and Technologies (CISTI), Aveiro, Portugal, June 2023.  
+> DOI: https://doi.org/10.23919/CISTI58278.2023.10212052
 
 ---
 
