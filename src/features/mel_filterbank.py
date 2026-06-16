@@ -107,23 +107,27 @@ def mel_filterbank(
     # Keep original behavior
     filt[0, 0] = 0
     
-    # --- Optional plot
+
+    # Plot
+    plt.figure(figsize=(12, 6))
+
+    for i in range(filt.shape[0]):
+        plt.plot(freqs, filt[i])
+
+    plt.title("Mel Filterbank")
+    plt.xlabel("Frequency (Hz)")
+    plt.ylabel("Amplitude")
+    plt.xlim(0, fmax*1.1)
+    plt.grid()
+        
+    # Save figure (optional)
+    if save_path:
+        plt.savefig(save_path, dpi=300, bbox_inches='tight')
+
+    # Display figure (optional)
     if print_filters:
-
-        plt.figure(figsize=(12, 6))
-
-        for i in range(filt.shape[0]):
-            plt.plot(freqs, filt[i])
-
-        plt.title("Mel Filterbank")
-        plt.xlabel("Frequency (Hz)")
-        plt.ylabel("Amplitude")
-        plt.xlim(0, fmax*1.1)
-        plt.grid()
-        
-        if save_path:
-            plt.savefig(save_path, dpi=300, bbox_inches='tight')
-        
         plt.show()
+
+    plt.close()
 
     return filt
