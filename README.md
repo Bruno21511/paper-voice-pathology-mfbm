@@ -38,7 +38,7 @@ Classification is performed without automatic classifiers. A single decision thr
 The figure below shows the distribution of the standard deviation of MFBM (Band 3) across all speakers. Dashed lines indicate the optimal thresholds obtained for each pairwise classification task.
 
 <p align="center">
-  <img src="results/figures/06_3_classes.png" width="750">
+  <img src="results/figures/05_std_distribution_all_classes.png" width="750">
 </p>
 
 ---
