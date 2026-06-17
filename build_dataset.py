@@ -9,9 +9,10 @@ import logging
 from pathlib import Path
 
 from src.data.data_loader import data_loader
+from src.data.preprocessing import preprocessing
+from src.data.export_dataframe import export_dataframe
 from src.features.mel_filterbank import mel_filterbank
 from src.features.get_MFBM import get_MFBM
-from src.data.export_dataframe import export_dataframe
 
 # Project root directory
 PROJECT_ROOT = Path(__file__).resolve().parent
@@ -84,6 +85,7 @@ def main():
 
     config = load_config(str(PROJECT_ROOT / args.config))
     dataset_name = config["data"]["corpus_name"]
+    normalize=config["audio"]["normalize"]
 
     corpora_root = args.corpora_root
     if corpora_root is None:
@@ -91,7 +93,16 @@ def main():
 
     # Load corpus
     logger.info(f"Loading dataset: {dataset_name}")
-    df, fs = data_loader(dataset_name=dataset_name, data_root=corpora_root)
+    df, fs = data_loader(
+        dataset_name=dataset_name, 
+        data_root=corpora_root
+    )
+    
+    # Preprocessing
+    df = preprocessing(
+        df,
+        normalize=normalize
+    )
 
     logger.info("Extracting MFBM features...")
     df = extract_mfbm(df, fs, config)

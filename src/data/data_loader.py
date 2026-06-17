@@ -11,8 +11,7 @@ logger = logging.getLogger(__name__)
 
 def data_loader(
     dataset_name: str,
-    data_root: str,
-    normalize: bool = True
+    data_root: str
 ) -> Tuple[pd.DataFrame, Optional[int]]:
     """
     Load metadata and audio signals from a dataset.
@@ -31,8 +30,6 @@ def data_loader(
     data_root : str
         Root folder containing datasets (absolute path recommended; 
         e.g., CORPORA_ROOT from the calling notebook/script)
-    normalize : bool, optional
-        If True, normalize each signal to its maximum absolute amplitude.
 
     Returns
     -------
@@ -89,10 +86,6 @@ def data_loader(
         # in case it's stereo
         signal = np.mean(signal, axis=1) if signal.ndim > 1 else signal        
 
-        # Normalize (optional)
-        if normalize and np.max(np.abs(signal)) > 0:
-            signal = signal / np.max(np.abs(signal))
-
         signals.append(signal)
         samplerates.append(fs)
 
@@ -107,6 +100,7 @@ def data_loader(
         logger.info(f"All signals have same sampling rate: {fs_global} Hz")
     else:
         fs_global = None
-        logger.warning("Inconsistent sampling rates detected")
+        logger.warning(f"Inconsistent sampling rates detected: {df['fs'].unique()}"
+)
 
     return df, fs_global

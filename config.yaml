@@ -1,5 +1,6 @@
 audio:
   sample_rate: 22050  # Informational only; actual value is loaded from the dataset
+  normalize: peak
 
 features:
   n_fft: 2048
