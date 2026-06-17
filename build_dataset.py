@@ -78,57 +78,35 @@ def main():
     parser = argparse.ArgumentParser(
         description="Build dataset from raw audio corpus using MFBM features"
     )
-
-    parser.add_argument(
-        "--config",
-        type=str,
-        default="config.yaml",
-        help="Path to configuration file"
-    )
-
-    parser.add_argument(
-        "--corpora-root",
-        type=str,
-        default=None,
-        help="Override corpora root directory (optional)"
-    )
-
+    parser.add_argument("--config", type=str, default="config.yaml")
+    parser.add_argument("--corpora-root", type=str, default=None)
     args = parser.parse_args()
 
-    config = load_config(args.config)
-
+    config = load_config(str(PROJECT_ROOT / args.config))
     dataset_name = config["data"]["corpus_name"]
 
     corpora_root = args.corpora_root
     if corpora_root is None:
-        corpora_root = str(Path(__file__).resolve().parents[0] / "../corpora")
-
-    logger.info(f"Loading dataset: {dataset_name}")
+        corpora_root = str(PROJECT_ROOT.parents[0] / "corpora")
 
     # Load corpus
-    df, fs = data_loader(
-        dataset_name=dataset_name,
-        data_root=corpora_root
-    )
+    logger.info(f"Loading dataset: {dataset_name}")
+    df, fs = data_loader(dataset_name=dataset_name, data_root=corpora_root)
 
     logger.info("Extracting MFBM features...")
-
-    # Extract features
     df = extract_mfbm(df, fs, config)
 
-    # Export processed dataset
-    output_root = config["data"].get("processed_dir", "data/processed")
+    output_root = PROJECT_ROOT / config["data"].get("processed_dir", "data/processed")
 
     logger.info("Exporting dataset...")
-
     export_dataframe(
         df,
         dataset_name=dataset_name,
-        output_root=output_root,        
+        #output_root=str(output_root),
+        output_root=str(PROJECT_ROOT / "data" / "processed"),
         expand_mfbm=True,
         drop_columns=['signal', 'MFBM', 'path', 'fs']
     )
-
     logger.info("Done.")
 
 
