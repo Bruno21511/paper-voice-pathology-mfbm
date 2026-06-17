@@ -178,8 +178,8 @@ parent_directory/
 
 **Note**: The corpus directory is configured separately from the repository to avoid storing large audio files in version control.
 
-Run the two steps in order:
-python build_dataset.py
+Run the two steps in order:<br><br>
+python build_dataset.py<br>
 python main.py
 
 ### Interactive exploration (notebooks)
@@ -188,6 +188,7 @@ For step-by-step exploration, visualization, and the figures used in the README,
 
 - `notebooks/01_MFBM_extraction.ipynb` — feature extraction (requires raw audio corpus)
 - `notebooks/02_analysis.ipynb` — classification and analysis (requires only the processed parquet file)
+<br><br>
 
 **Configuration**: Before running the pipeline, check or adjust the dataset names, paths, and extraction parameters in the `config.yaml` file located at the root of the project.
 
