@@ -7,8 +7,6 @@ import matplotlib
 matplotlib.use('Agg')  # non-interactive backend, does NOT open windows
 
 import argparse
-import subprocess
-import sys
 import yaml
 import logging
 import pandas as pd
@@ -65,17 +63,8 @@ def run_classification_task(df, label_map, mean_band, std_band, class_names, fig
 
 def main():
     parser = argparse.ArgumentParser(description="Run voice pathology analysis pipeline")
-    parser.add_argument("--build", action="store_true",
-                         help="Run build_dataset.py first (requires raw audio corpus)")
     parser.add_argument("--config", type=str, default="config.yaml")
     args = parser.parse_args()
-
-    if args.build:
-        logger.info("Running build_dataset.py first...")
-        subprocess.run(
-            [sys.executable, str(PROJECT_ROOT / "build_dataset.py"), "--config", args.config],
-            check=True
-        )
 
     config = load_config(str(PROJECT_ROOT / args.config))
 

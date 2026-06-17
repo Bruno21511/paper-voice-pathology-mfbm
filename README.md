@@ -45,6 +45,8 @@ The figure below shows the distribution of the standard deviation of MFBM (Band 
 
 ```
 ├── data/
+│   ├── myUSP
+│   │   └── myUSP.csv             	# Audio corpus metadata (filename, age, gender, group)
 │   └── processed/
 │       └── myUSP.parquet           # Processed dataset with extracted MFBM features (no audio signals)
 │
@@ -145,11 +147,16 @@ This discrepancy originates from the use of an incorrect illustrative filterbank
 
 See requirements.txt for dependencies.
 
-### Option A — Starting from pre-extracted features
+### Quick start (recommended)
 
-Open and run `notebooks/02_analysis.ipynb` directly. No audio files required.
+#### Option A — Starting from pre-extracted features
 
-### Option B — Starting from audio files
+If you already have the processed parquet file (included in this repo under `data/processed/`), simply run:
+python main.py
+
+This reproduces all paper results: classification metrics, confusion matrices, and figures, saved to `results/metrics/` and `results/figures/`.
+
+#### Option B — Starting from raw audio files
 
 Place the audio corpus outside the repository, following the structure below:
 
@@ -171,9 +178,18 @@ parent_directory/
 
 **Note**: The corpus directory is configured separately from the repository to avoid storing large audio files in version control.
 
-Then run `notebooks/01_MFBM_extraction.ipynb` followed by `notebooks/02_analysis.ipynb`.
+Run the two steps in order:
+python build_dataset.py
+python main.py
 
-**Configuration**: Before running the pipeline, check or adjust the dataset names, paths, and extraction parameters in the config.yaml file located at the root of the project.
+### Interactive exploration (notebooks)
+
+For step-by-step exploration, visualization, and the figures used in the README, open and run the notebooks in order:
+
+- `notebooks/01_MFBM_extraction.ipynb` — feature extraction (requires raw audio corpus)
+- `notebooks/02_analysis.ipynb` — classification and analysis (requires only the processed parquet file)
+
+**Configuration**: Before running the pipeline, check or adjust the dataset names, paths, and extraction parameters in the `config.yaml` file located at the root of the project.
 
 ---
 
