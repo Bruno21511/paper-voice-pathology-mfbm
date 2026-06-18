@@ -131,6 +131,16 @@ def preprocessing(
 
     pre_emphasis_coef : float
         Pre-emphasis coefficient.
+        
+    WS_ms : int, optional
+        Frame size in milliseconds for energy-based trimming, by default 15.
+        
+    k1 : float, optional
+        Lower energy threshold for trim_signal, by default 1e-3.
+        
+    k2_ratio : int, optional
+        Multiplier of k1 defining the upper confirmation threshold for 
+        trim_signal, by default 10.
 
     Returns
     -------
