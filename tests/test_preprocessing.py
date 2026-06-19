@@ -20,8 +20,7 @@ def test_preprocessing_peak_normalization():
         normalize="peak",
         dc_remove=False,
         trim_signal=False,
-        equal_duration=False,
-        pre_emphasis=False
+        equal_duration=False
     )
 
     signal = df_out["signal"].iloc[0]
@@ -42,44 +41,14 @@ def test_preprocessing_dc_removal():
         normalize=None,
         dc_remove=True,
         trim_signal=False,
-        equal_duration=False,
-        pre_emphasis=False
+        equal_duration=False
     )
 
     signal = df_out["signal"].iloc[0]
 
     assert np.isclose(np.mean(signal), 0.0)
 
-
-def test_preprocessing_pre_emphasis():
-
-    signal = np.array([1.0, 2.0, 3.0])
-
-    df = pd.DataFrame({
-        "signal": [signal]
-    })
-
-    df_out = preprocessing(
-        df,
-        normalize=None,
-        dc_remove=False,
-        trim_signal=False,
-        equal_duration=False,
-        pre_emphasis=True,
-        pre_emphasis_coef=0.97
-    )
-
-    expected = np.array([
-        1.0,
-        2.0 - 0.97 * 1.0,
-        3.0 - 0.97 * 2.0
-    ])
-
-    np.testing.assert_allclose(
-        df_out["signal"].iloc[0],
-        expected
-    )
-    
+   
     
 def test_preprocessing_empty_signal_handling():
     

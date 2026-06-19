@@ -6,6 +6,35 @@ from typing import Dict, List
 
 logger = logging.getLogger(__name__)
 
+
+def _discriminative_bands_to_config_format(results: List[dict]) -> dict:
+    """
+    Convert find_most_discriminative_bands() output into the same 
+    nested-dict format previously used in config.yaml's 
+    discriminative_bands section, keyed by 'class1_vs_class2'.
+
+    Parameters
+    ----------
+    results : list of dict
+        Output of find_most_discriminative_bands.
+
+    Returns
+    -------
+    dict
+        Mapping like {'control_vs_physio': {'mean_band': ..., 'std_band': ...}, ...}
+    """
+    db = {}
+    for r in results:
+        key = r['pair'].replace(' vs ', '_vs_')
+        db[key] = {
+            'mean_band': r['best_band_mean'],
+            'std_band': r['best_band_std']
+        }
+    return db
+    
+    
+    
+
 def find_most_discriminative_bands(
     mean_dict: Dict[str, np.ndarray],
     std_dict: Dict[str, np.ndarray]
@@ -51,4 +80,4 @@ def find_most_discriminative_bands(
     for r in results:
         logger.info(f"{r['pair']}: Mean -> band {r['best_band_mean']+1}, Std -> band {r['best_band_std']+1}")
 
-    return results
+    return _discriminative_bands_to_config_format(results)

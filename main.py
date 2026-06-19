@@ -96,11 +96,10 @@ def main():
         save_path=str(figures_dir / "02_mean_std_per_class.png")
     )
 
-    # --- 5. Identify discriminative bands (informational, logged only)
-    find_most_discriminative_bands(mean_dict, std_dict)
+    # --- 5. Identify discriminative bands
+    db = find_most_discriminative_bands(mean_dict, std_dict)
 
     # --- 6. Run the three pairwise classification tasks
-    db = config["discriminative_bands"]
     logger.info("Running classification tasks...")
 
     cm_12, f1_12, acc_12, t_opt_12 = run_classification_task(
@@ -120,11 +119,11 @@ def main():
     )
 
     cm_23, f1_23, acc_23, t_opt_23 = run_classification_task(
-        df, label_map={'physio': 0, 'neuro': 1},
-        mean_band=db['physio_vs_neuro']['mean_band'],
-        std_band=db['physio_vs_neuro']['std_band'],
-        class_names=('Physio', 'Neuro'),
-        figures_dir=figures_dir, fig_prefix="03_physio_vs_neuro"
+        df, label_map={'neuro': 0, 'physio': 1},
+        mean_band=db['neuro_vs_physio']['mean_band'],
+        std_band=db['neuro_vs_physio']['std_band'],
+        class_names=('Neuro', 'Physio'),
+        figures_dir=figures_dir, fig_prefix="03_neuro_vs_physio"
     )
 
     # --- 7. Save metrics and confusion matrices
@@ -132,12 +131,12 @@ def main():
     results = {
         'control_vs_physio': (cm_12, f1_12, acc_12),
         'control_vs_neuro':  (cm_13, f1_13, acc_13),
-        'physio_vs_neuro':   (cm_23, f1_23, acc_23)
+        'neuro_vs_physio':   (cm_23, f1_23, acc_23)
     }
     class_names_dict = {
         'control_vs_physio': ('Control', 'Physio'),
         'control_vs_neuro':  ('Control', 'Neuro'),
-        'physio_vs_neuro':   ('Physio', 'Neuro')
+        'neuro_vs_physio':   ('Neuro', 'Physio')
     }
 
     save_metrics_csv(results, output_path=str(metrics_dir / "metrics.csv"))

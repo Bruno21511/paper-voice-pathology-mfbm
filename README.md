@@ -126,20 +126,41 @@ is a consistent marker of laryngeal pathology**, regardless of its origin (physi
 4. **Band selection:** For each pair of classes, the most discriminative band is identified by comparing class means.
 5. **Classification:** A decision threshold is applied to the selected band, optimised for F1-Score.
 
-### Note on terminology
+### Notes on implementation details and result discrepancies
 
-The published article refers to the extracted features as "band energies". The implementation uses **filterbank magnitudes** (not energies). 
-This discrepancy reflects an evolution of the codebase during the research, and the results reported in the paper were obtained using magnitudes, as implemented here.
+#### Note on terminology
 
-### Note on filterbank representation and bands definition
+The published article refers to the extracted features as "band energies". The implementation uses **filterbank magnitudes** (not energies).
+
+This discrepancy reflects an evolution of the codebase during the research process. The results reported in the paper were obtained using magnitudes, as implemented in this repository.
+
+#### Note on filterbank representation and band definition
 
 The published article includes a filterbank representation with an **incorrect definition**, assuming a 20% overlap between adjacent filters. The band limits reported in the paper were derived from this incorrect representation.
 
-However, both the original implementation used to obtain the results and the implementation provided in this repository use a Mel filterbank with 50% overlap between filters. Therefore, **the results themselves are based on the correct filterbank configuration**.
+However, both the original implementation used to obtain the reported results and the implementation provided in this repository use a Mel filterbank with **50% overlap** between adjacent filters. Therefore, **the reported results are based on the correct filterbank configuration**.
 
-This discrepancy originates from the use of an incorrect illustrative filterbank when preparing the article, which led to inconsistencies in the reported band definitions, while the underlying computations remained correct.
+This discrepancy originates from the use of an incorrect illustrative filterbank during the preparation of the article, which introduced inconsistencies in the reported band definitions while leaving the underlying computations unchanged.
 
----
+#### Note on discriminative band selection (Control vs Physio)
+
+For the Control vs Physio comparison, the original article reported band 8 as the most discriminative mean-MFBM feature.
+
+In the current implementation, band 3 is identified as the most discriminative band for the same comparison. This difference is likely related to small implementation details in the signal processing pipeline, such as numerical precision, interpolation, normalization, or frame handling.
+
+Importantly, the discriminability scores of bands 3 and 8 are very close, suggesting that both bands capture a similar underlying discriminatory pattern.
+
+For consistency with the results obtained in the current implementation, the discriminative bands identified by this analysis are used in the subsequent experiments.
+
+#### Note on F1-score computation (Neuro vs Physio)
+
+A discrepancy is observed between the F1-score reported in the article and the value obtained in the current implementation for the Neuro vs Physio classification task.
+
+This difference is not related to changes in the classifier or feature extraction process, but rather to the definition of the positive class used for the calculation of precision, recall, and F1-score.
+
+The current implementation follows the default alphabetical ordering of class labels, resulting in a different class being considered the positive class compared with the original evaluation. Since these metrics are computed with respect to the positive class, changing the label assignment can affect the reported values even when the underlying predictions remain unchanged.
+
+As both Neuro and Physio correspond to pathological voice conditions, this difference does not affect the interpretation of the classification task. However, it influences the reported F1-score value, explaining the observed discrepancy.
 
 ## Usage
 

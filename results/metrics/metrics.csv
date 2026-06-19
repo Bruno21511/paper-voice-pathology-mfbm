@@ -1,4 +1,4 @@
 class_pair;accuracy;f1_score;tn;fp;fn;tp
 control_vs_physio;1.0;1.0;15;0;0;32
 control_vs_neuro;0.9655;0.963;15;0;1;13
-physio_vs_neuro;0.9348;0.88;32;0;3;11
+neuro_vs_physio;0.9348;0.9552;11;3;0;32

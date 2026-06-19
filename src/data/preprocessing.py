@@ -97,8 +97,6 @@ def preprocessing(
     dc_remove: bool = False,
     trim_signal: bool = False,
     equal_duration: bool = False,
-    pre_emphasis: bool = False,
-    pre_emphasis_coef: float = 0.97,
     WS_ms: int = 15,
     k1: float = 1e-3,
     k2_ratio: int = 10
@@ -125,12 +123,6 @@ def preprocessing(
 
     equal_duration : bool
         Crop all signals to the shortest signal.
-
-    pre_emphasis : bool
-        Apply pre-emphasis filter.
-
-    pre_emphasis_coef : float
-        Pre-emphasis coefficient.
         
     WS_ms : int, optional
         Frame size in milliseconds for energy-based trimming, by default 15.
@@ -205,25 +197,6 @@ def preprocessing(
         df["signal"] = df["signal"].apply(
             lambda x: x[:min_length]
         )
-
-
-    # -----------------------------
-    # 4. Pre-emphasis
-    # -----------------------------
-    if pre_emphasis:
-
-        if any(len(sig) < 2 for sig in df["signal"]):
-            raise ValueError(
-                "All signals must contain at least 2 samples "
-                "when pre_emphasis=True."
-            )
-
-        df["signal"] = df["signal"].apply(
-            lambda x: np.append(
-                x[0],
-                x[1:] - pre_emphasis_coef * x[:-1]
-            )
-        )   
     
     # -----------------------------
     # 5. Normalization
@@ -249,7 +222,6 @@ def preprocessing(
         f"(dc_remove={dc_remove}, "
         f"trim_signal={trim_signal}, "
         f"equal_duration={equal_duration}, "
-        f"pre_emphasis={pre_emphasis}, "
         f"normalize={normalize})"
 )
 

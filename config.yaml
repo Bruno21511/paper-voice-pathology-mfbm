@@ -22,28 +22,6 @@ class_merging:
   groups_to_merge: ['edema', 'nodulo']
   merged_label: physio
 
-discriminative_bands:
-  # Zero-based indexing.
-  #
-  # Note regarding Control vs Neuro:
-  # The original paper reported band 8 as the most discriminative
-  # mean-MFBM feature. The current implementation identifies band 3.
-  #
-  # Since both bands produce very similar discriminability scores,
-  # band 8 is retained here to preserve comparability with the
-  # published study.
-  control_vs_physio:
-    mean_band: 7
-    std_band: 2
-
-  control_vs_neuro:
-    mean_band: 7
-    std_band: 2
-
-  physio_vs_neuro:
-    mean_band: 2
-    std_band: 2
-
 results:
   figures_dir: results/figures
   metrics_dir: results/metrics
