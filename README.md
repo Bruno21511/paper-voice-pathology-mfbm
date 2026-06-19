@@ -12,6 +12,8 @@ This repository contains the code and data associated with the paper:
 > 18th Iberian Conference on Information Systems and Technologies (CISTI), Aveiro, Portugal, June 2023.  
 > DOI: https://doi.org/10.23919/CISTI58278.2023.10212052
 
+The pre-submission version of the paper is available [here](paper/Rodrigues_et_al_Cisti2023_pre-submission_version.pdf).
+
 The work presents a simple threshold-based method to discriminate between healthy and pathological voices, using Mel Filterbank Magnitudes (MFBM) computed from sustained vowel /a/ recordings.
 
 ---
@@ -49,6 +51,9 @@ The figure below shows the distribution of the standard deviation of MFBM (Band 
 │   │   └── myUSP.csv             	# Audio corpus metadata (filename, age, gender, group)
 │   └── processed/
 │       └── myUSP.parquet           # Processed dataset with extracted MFBM features (no audio signals)
+│
+├── paper/
+│   └── Rodrigues_et_al_Cisti2023_pre-submission_version.pdf   # Pre-submission version of the article
 │
 ├── notebooks/
 │   ├── 01_MFBM_extraction.ipynb    # Load audio, extract MFBM, export processed dataset
