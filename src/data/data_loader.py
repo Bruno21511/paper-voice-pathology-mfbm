@@ -36,9 +36,6 @@ def data_loader(
     df : pd.DataFrame
         DataFrame containing metadata and loaded audio signals:
         columns = [file, age, gender, group, path, class, signal, fs]
-    fs_global : int or None
-        Global sampling rate if all files share the same rate,
-        otherwise None.
     """
 
     # -----------------------------
@@ -103,4 +100,4 @@ def data_loader(
         logger.warning(f"Inconsistent sampling rates detected: {df['fs'].unique()}"
 )
 
-    return df, fs_global
+    return df

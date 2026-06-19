@@ -17,7 +17,7 @@ def test_data_loader_inconsistent_sample_rates(tmp_path):
     csv_path = dataset_path / f"{dataset_name}.csv"
     csv_path.write_text("sample1.wav;30;M;control\nsample2.wav;40;F;control\n")
 
-    df, fs_global = data_loader(dataset_name=dataset_name, data_root=str(tmp_path))
-
-    assert fs_global is None
+    df = data_loader(dataset_name=dataset_name, data_root=str(tmp_path))
+    
     assert len(df) == 2
+    assert set(df['fs']) == {22050, 16000}

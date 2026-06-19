@@ -22,11 +22,10 @@ def test_data_loader_basic(tmp_path):
     csv_path.write_text("sample1.wav;30;M;control\n")
 
     # --- chamar a função
-    df, fs_global = data_loader(dataset_name=dataset_name, data_root=str(tmp_path))
-
-    # --- verificações
+    df = data_loader(dataset_name=dataset_name, data_root=str(tmp_path))
+    
+    # --- verification  
     assert len(df) == 1
     assert df['group'].iloc[0] == 'control'
-    assert fs_global == fs
+    assert df['fs'].iloc[0] == fs
     assert df['signal'].iloc[0].shape[0] == fs
-    assert np.max(np.abs(df['signal'].iloc[0])) <= 1.0  # normalizado

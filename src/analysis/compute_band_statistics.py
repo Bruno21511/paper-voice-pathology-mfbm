@@ -22,7 +22,7 @@ def compute_band_statistics(df: pd.DataFrame) -> pd.DataFrame:
     
     mean_list = []
     std_list = []
-    for mfbm in df_out['MFBM']:
+    for mfbm in df_out['mfbm']:
         mean_bands = np.mean(mfbm, axis=1)
         std_bands = np.std(mfbm, axis=1)
         mean_list.append(mean_bands)

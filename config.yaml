@@ -9,6 +9,7 @@ features:
   overlap: 0.5
   frame_size_ms: 30
   hop_size_ms: 10
+  edge_trim_frames: 3
 
 data:
   # Dataset name used to build paths inside CORPORA_ROOT

@@ -36,7 +36,7 @@ def import_dataframe(
     # --- 2. Rebuild MFBM
     if rebuild_mfbm:
         # find all MFBM columns
-        mfbm_cols = [col for col in df.columns if col.startswith("MFBM_")]
+        mfbm_cols = [col for col in df.columns if col.startswith("mfbm_")]
         # sort to guarantee order
         mfbm_cols = sorted(mfbm_cols, key=lambda x: int(x.split("_")[1]))
 
@@ -44,7 +44,7 @@ def import_dataframe(
             bands = [np.array(row[col]) for col in mfbm_cols]
             return np.vstack(bands)
 
-        df['MFBM'] = df.apply(rebuild, axis=1)
+        df['mfbm'] = df.apply(rebuild, axis=1)
 
         # remove duplicate columns
         df = df.drop(columns=mfbm_cols)

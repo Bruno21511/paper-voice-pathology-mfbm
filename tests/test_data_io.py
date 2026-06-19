@@ -8,7 +8,7 @@ def test_export_import_roundtrip(tmp_path):
     matriz_original = np.random.rand(20, 50)
     df = pd.DataFrame({
         'file': ['a.wav'],
-        'MFBM': [matriz_original]
+        'mfbm': [matriz_original]
     })
 
     export_dataframe(
@@ -16,7 +16,7 @@ def test_export_import_roundtrip(tmp_path):
         dataset_name="test",
         output_root=str(tmp_path),
         expand_mfbm=True,
-        drop_columns=['MFBM']
+        drop_columns=['mfbm']
     )
 
     # Deixa o import reconstruir a matriz (rebuild_mfbm=True por defeito)
@@ -27,6 +27,6 @@ def test_export_import_roundtrip(tmp_path):
 
     # Compara a matriz inteira devolvida com a original
     np.testing.assert_allclose(
-        df_back['MFBM'].iloc[0],
+        df_back['mfbm'].iloc[0],
         matriz_original
     )

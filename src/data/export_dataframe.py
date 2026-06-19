@@ -38,10 +38,10 @@ def export_dataframe(
     df_out = df.copy()
 
     # --- 1. Expand MFBM if requested
-    if expand_mfbm and 'MFBM' in df_out.columns:
-        n_bands = df_out['MFBM'].iloc[0].shape[0]
+    if expand_mfbm and 'mfbm' in df_out.columns:
+        n_bands = df_out['mfbm'].iloc[0].shape[0]
         for i in range(n_bands):
-            df_out[f'MFBM_{i}'] = df_out['MFBM'].apply(
+            df_out[f'mfbm_{i}'] = df_out['mfbm'].apply(
                 lambda x: x[i, :].tolist()
             )
 

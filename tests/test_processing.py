@@ -5,7 +5,7 @@ from src.analysis.compute_band_statistics import compute_band_statistics
 from src.data.merge_pathology_classes import merge_pathology_classes
 
 def test_compute_band_statistics_shape():
-    df = pd.DataFrame({'MFBM': [np.random.rand(20, 50)]})
+    df = pd.DataFrame({'mfbm': [np.random.rand(20, 50)]})
     df_out = compute_band_statistics(df)
     assert df_out['mean_MFBM'].iloc[0].shape == (20,)
     assert df_out['std_MFBM'].iloc[0].shape == (20,)
