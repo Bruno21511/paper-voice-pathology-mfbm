@@ -105,7 +105,7 @@ The audio files are **not included** in this repository due to distribution rest
 
 ### Pre-extracted Features
 
-To allow full reproducibility without the audio files, the file `data//processed/myUSP.parquet` contains the pre-extracted MFBM features for all 61 speakers. This file does **not** contain any audio signals.
+To allow full reproducibility without the audio files, the file `data/processed/myUSP.parquet` contains the pre-extracted MFBM features for all 61 speakers. This file does **not** contain any audio signals.
 
 If you have access to the audio files, notebook `01_MFBM_extraction.ipynb` shows how to reproduce the feature extraction from scratch.
 
@@ -115,7 +115,7 @@ If you have access to the audio files, notebook `01_MFBM_extraction.ipynb` shows
 
 The analysis identified two frequency bands as the most discriminative across all three classification tasks:
 
-- **Band 3 (108–275 Hz):** tipically captures the fundamental frequency and/or its first harmonic
+- **Band 3 (108–275 Hz):** typically captures the fundamental frequency and/or its first harmonic
 - **Band 8 (603–872 Hz):** corresponds to the first formant of the sustained vowel /a/
 
 Notably, the standard deviation of Band 3 alone proved sufficient to discriminate between all class pairs, suggesting that **vocal instability in the 108–275 Hz range 
