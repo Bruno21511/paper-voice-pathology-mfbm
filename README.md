@@ -32,7 +32,7 @@ Three binary classification tasks are addressed:
 |------|----------|----------|
 | Control vs. Physiological pathologies | 100% | 100% |
 | Control vs. Neuromuscular pathologies | 96.55% | 96.30% |
-| Physiological vs. Neuromuscular pathologies | 93.48% | 88.0% |
+| Physiological vs. Neuromuscular pathologies | 93.48% | 95.52% |
 
 Classification is performed without automatic classifiers. A single decision threshold is applied per task, selected to maximise the F1-score.<br>
 The figure below shows the distribution of the standard deviation of MFBM (Band 3) across all speakers. Dashed lines indicate the optimal thresholds obtained for each pairwise classification task.

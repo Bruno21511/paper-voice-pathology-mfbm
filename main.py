@@ -22,7 +22,7 @@ from src.analysis.threshold_f1_search import threshold_f1_search
 from src.evaluation.compute_threshold_metrics import compute_threshold_metrics
 from src.evaluation.format_confusion_matrix import format_confusion_matrix
 from src.evaluation.save_metrics_csv import save_metrics_csv
-from src.visualization.plot_meldefined_magnitudes_per_class import plot_meldefined_magnitudes_per_class
+from src.visualization.plot_mfbm_statistics_per_class import plot_mfbm_statistics_per_class
 from src.visualization.plot_threshold_classification import plot_threshold_classification
 from src.visualization.plot_and_save_confusion_matrices import plot_and_save_confusion_matrices
 
@@ -39,7 +39,7 @@ def load_config(path: str) -> dict:
 
 def run_classification_task(df, label_map, mean_band, std_band, class_names, figures_dir, fig_prefix):
     """
-    Run threshold search, evaluation, and plotting for one binary 
+    Run threshold search, evaluation, and plotting for one binary
     classification task (one pair of classes).
     """
     groups = list(label_map.keys())
@@ -68,8 +68,8 @@ def main():
 
     config = load_config(str(PROJECT_ROOT / args.config))
 
-    figures_dir = PROJECT_ROOT / "results" / "figures"
-    metrics_dir = PROJECT_ROOT / "results" / "metrics"
+    figures_dir = PROJECT_ROOT / config['results']['figures_dir']
+    metrics_dir = PROJECT_ROOT / config['results']['metrics_dir']
     figures_dir.mkdir(parents=True, exist_ok=True)
     metrics_dir.mkdir(parents=True, exist_ok=True)
 
@@ -85,24 +85,28 @@ def main():
     df = compute_band_statistics(df)
 
     # --- 3. Merge pathology classes (per paper methodology)
-    cm_cfg = config["class_merging"]
-    df = merge_pathology_classes(df, classes_to_merge=cm_cfg["groups_to_merge"], merged_label=cm_cfg["merged_label"])
+    merge_cfg = config['class_merging']
+    df = merge_pathology_classes(
+        df,
+        classes_to_merge=merge_cfg['groups_to_merge'],
+        merged_label=merge_cfg['merged_label']
+    )
 
     # --- 4. Aggregate statistics per class and plot
     logger.info("Aggregating and plotting per-class statistics...")
     mean_dict, std_dict = aggregate_band_statistics_per_class(df)
-    plot_meldefined_magnitudes_per_class(
+    plot_mfbm_statistics_per_class(
         mean_dict, std_dict,
         save_path=str(figures_dir / "02_mean_std_per_class.png")
     )
 
-    # --- 5. Identify discriminative bands
+    # --- 5. Identify discriminative bands empirically
     db = find_most_discriminative_bands(mean_dict, std_dict)
 
     # --- 6. Run the three pairwise classification tasks
     logger.info("Running classification tasks...")
 
-    cm_12, f1_12, acc_12, t_opt_12 = run_classification_task(
+    cm_12, f1_12, acc_12, _ = run_classification_task(
         df, label_map={'control': 0, 'physio': 1},
         mean_band=db['control_vs_physio']['mean_band'],
         std_band=db['control_vs_physio']['std_band'],
@@ -110,7 +114,7 @@ def main():
         figures_dir=figures_dir, fig_prefix="03_control_vs_physio"
     )
 
-    cm_13, f1_13, acc_13, t_opt_13 = run_classification_task(
+    cm_13, f1_13, acc_13, _ = run_classification_task(
         df, label_map={'control': 0, 'neuro': 1},
         mean_band=db['control_vs_neuro']['mean_band'],
         std_band=db['control_vs_neuro']['std_band'],
@@ -118,7 +122,7 @@ def main():
         figures_dir=figures_dir, fig_prefix="03_control_vs_neuro"
     )
 
-    cm_23, f1_23, acc_23, t_opt_23 = run_classification_task(
+    cm_23, f1_23, acc_23, _ = run_classification_task(
         df, label_map={'neuro': 0, 'physio': 1},
         mean_band=db['neuro_vs_physio']['mean_band'],
         std_band=db['neuro_vs_physio']['std_band'],
